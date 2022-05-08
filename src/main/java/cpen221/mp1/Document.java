@@ -1,22 +1,47 @@
 package cpen221.mp1;
 
 import cpen221.mp1.exceptions.NoSuitableSentenceException;
-import cpen221.mp1.sentiments.SentimentAnalysis;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
+import java.text.BreakIterator;
+import java.util.*;
 
 public class Document {
+    /*--- Constant ---*/
+    private static int space = 0x20, comma = 0x2C, colon = 0x3A, semicolon = 0x3b, hypen = 0x2d, newline = 0x0A;
 
+    private String docId; // Document Identifier
+    private StringBuilder DocumentText; //Document Text
+    Hashtable<String, Integer> wordOccurrence= new Hashtable<>();
+    private int sentenceCounter = 0, phraseCounter = 0;
+    private int uniqueWordCounter = 0, totalWordCounter =0, SingleOccurrenceWordCounter = 0;
     /* ------- Task 0 ------- */
     /*  all the basic things  */
 
     /**
      * Create a new document using a URL
      * @param docId the document identifier
-     * @param docURL the URL with the contents of the document
+     * @param docURL the URL with the contents of the document; Not Null
      */
-    public Document(String docId, URL docURL) {
-        // TODO: Implement this constructor
+    public Document(String docId, @NotNull URL docURL)
+    {
+        this.docId = docId;
+        DocumentText = new StringBuilder();
+        try
+        {
+            Scanner urlScanner = new Scanner(docURL.openStream());
+            while(urlScanner.hasNext())
+            {
+                this.DocumentText.append(urlScanner.nextLine());
+            }
+        }
+        catch(IOException e) {System.out.println("Problem Reading from the URL");}
+
+
     }
 
     /**
@@ -25,19 +50,103 @@ public class Document {
      * @param fileName the name of the file with the contents of
      *                 the document
      */
-    public Document(String docId, String fileName) {
-        // TODO: Implement this constructor
+    public Document(String docId, String fileName)
+    {
+        this.docId = docId;
+        DocumentText = new StringBuilder();
+        try
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            for(String fileLine = reader.readLine(); fileLine != null; fileLine = reader.readLine())
+            {
+                this.DocumentText.append(fileLine.toString());
+            }
+        }
+        catch(IOException e){System.out.println("Problem Reading from the URL");}
+        init();
     }
 
     /**
      * Obtain the identifier for this document
      * @return the identifier for this document
      */
-    public String getDocId() {
-        // TODO: Implement this method
-        return null;
+    public String getDocId()
+    {
+        return this.docId;
     }
 
+    /**
+     *  Break the document into sentence, phrase and words
+     *
+     */
+    private void init()
+    {
+        String text = this.DocumentText.toString();
+        BreakIterator iterator = BreakIterator.getSentenceInstance(Locale.US);
+        StringBuilder Word = new StringBuilder() ;
+
+
+        iterator.setText(text);
+        int start = iterator.first();
+        int tempPhraseCounter = 0;
+        boolean isPhraseIndicator = false, isLetterIndicator = false;
+
+        for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next())
+        {
+            String sentence = text.substring(start, end);
+            this.sentenceCounter++;
+            for(int phraseCharIndex = 0; phraseCharIndex < sentence.length(); phraseCharIndex = Word.length() ==0? phraseCharIndex+1 : phraseCharIndex+Word.length())
+            {
+                Word.setLength(0);
+                if(isPhraseIndicator(sentence.charAt(phraseCharIndex))) tempPhraseCounter++;
+                if(isLetterIndicator(sentence.charAt(phraseCharIndex)))
+                {
+
+                    for(int letterCharIndex = 0; isLetterIndicator(sentence.charAt(phraseCharIndex+letterCharIndex))|| (int)sentence.charAt(phraseCharIndex+letterCharIndex)==hypen; letterCharIndex++)
+                    {
+                        Word.append(sentence.charAt(phraseCharIndex+letterCharIndex));
+                    }
+                    if(!Word.isEmpty())
+                    {
+                        this.totalWordCounter++;
+                        if(!this.wordOccurrence.containsKey(Word.toString()) ) this.wordOccurrence.put(Word.toString(),1);
+                        else this.wordOccurrence.put(Word.toString(),this.wordOccurrence.get(Word.toString())+1);
+
+                    }
+
+                }
+            }
+
+            if(tempPhraseCounter > 1) tempPhraseCounter++;
+            tempPhraseCounter = 0;
+        }
+        this.phraseCounter +=tempPhraseCounter;
+    }
+
+
+    /**
+     * Check if the current character is colon, semicolon or comma
+     * If ture, then it indicates the presence of phrases
+     * @param currentChar: character to be evaluated
+     * @return the presence of phrases(colon, semicolon or comma)
+     */
+    private boolean isPhraseIndicator(char currentChar)
+    {
+        int charAscii = (int) currentChar;
+        return charAscii == colon || charAscii == semicolon || charAscii == comma;
+    }
+
+    /**
+     * Check if the current character is letter in the alphabet
+     * If ture, then it indicates the presence of a letter
+     * @param currentChar: character to be evaluated
+     * @return the presence of a e letter (colon, semicolon or comma)
+     */
+    private boolean isLetterIndicator(char currentChar)
+    {
+        int charAscii = (int) currentChar;
+        return (charAscii <= 0x5A && charAscii >= 0x41) || (charAscii >= 0x61 && charAscii <= 0x7A);
+    }
     /* ------- Task 1 ------- */
 
     public double averageWordLength() {
