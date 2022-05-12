@@ -210,12 +210,13 @@ public class Document
 
     public double hapaxLegomanaRatio()
     {
+        this.uniqueWordCounter = 0;
         Set<String> KeyWord = this.wordOccurrence.keySet();
         for(String Key: KeyWord)
         {
-            if(this.wordOccurrence.get(Key) == 1) uniqueWordCounter++;
+            if(this.wordOccurrence.get(Key) == 1) this.uniqueWordCounter++;
         }
-        return (double) uniqueWordCounter/totalWordCounter;
+        return (double) this.uniqueWordCounter/this.totalWordCounter;
     }
 
     /* ------- Task 2 ------- */
@@ -338,13 +339,13 @@ public class Document
 
     public double[] getDivMatrix()
     {
-        double[] m_iDoc = new double[6];
+        double[] m_iDoc = new double[5];
 
         m_iDoc[0] = this.averageSentenceLength();
         m_iDoc[1] = this.averageSentenceComplexity();
-        m_iDoc[3] = this.averageWordLength();
-        m_iDoc[4] = this.uniqueWordRatio();
-        m_iDoc[5] = this.hapaxLegomanaRatio();
+        m_iDoc[2] = this.averageWordLength();
+        m_iDoc[3] = this.uniqueWordRatio();
+        m_iDoc[4] = this.hapaxLegomanaRatio();
 
         return m_iDoc;
     }

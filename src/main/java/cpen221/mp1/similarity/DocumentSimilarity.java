@@ -70,7 +70,7 @@ public class DocumentSimilarity {
      */
     public static double documentDivergence(Document doc1, Document doc2)
     {
-        int matrixSize = 6;
+        int matrixSize = 5;
         double sum = 0;
         double[] m_iDoc1 = doc1.getDivMatrix();
         double[] m_iDoc2 = doc2.getDivMatrix();
@@ -78,6 +78,7 @@ public class DocumentSimilarity {
         {
            sum += weight[i]*Math.abs(m_iDoc1[i]-m_iDoc2[i]);
         }
-        return sum + jsDivergence(doc1, doc2)* WT_JS_DIVERGENCE;
+        sum += jsDivergence(doc1, doc2)* WT_JS_DIVERGENCE;
+        return sum;
     }
 }

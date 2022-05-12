@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.net.MalformedURLException;
-import java.net.URL;
 
-public class DivergenceTest
+public class DivergenceTestX
 {
 
     private static Document testDocument1;
