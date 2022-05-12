@@ -335,4 +335,18 @@ public class Document
         return SentimentAnalysis.getMostNegativeSentence(this);
     }
 
+
+    public double[] getDivMatrix()
+    {
+        double[] m_iDoc = new double[6];
+
+        m_iDoc[0] = this.averageSentenceLength();
+        m_iDoc[1] = this.averageSentenceComplexity();
+        m_iDoc[3] = this.averageWordLength();
+        m_iDoc[4] = this.uniqueWordRatio();
+        m_iDoc[5] = this.hapaxLegomanaRatio();
+
+        return m_iDoc;
+    }
+
 }

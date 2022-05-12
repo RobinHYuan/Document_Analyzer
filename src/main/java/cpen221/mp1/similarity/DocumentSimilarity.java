@@ -9,12 +9,16 @@ import java.util.Set;
 public class DocumentSimilarity {
 
     /* DO NOT CHANGE THESE WEIGHTS */
-    private final int WT_AVG_WORD_LENGTH      = 5;
-    private final int WT_UNIQUE_WORD_RATIO    = 15;
-    private final int WT_HAPAX_LEGOMANA_RATIO = 25;
-    private final int WT_AVG_SENTENCE_LENGTH  = 1;
-    private final int WT_AVG_SENTENCE_CPLXTY  = 4;
-    private final int WT_JS_DIVERGENCE        = 50;
+    private static final int WT_AVG_WORD_LENGTH      = 5;
+    private static final int WT_UNIQUE_WORD_RATIO    = 15;
+    private static final int WT_HAPAX_LEGOMANA_RATIO = 25;
+    private static final int WT_AVG_SENTENCE_LENGTH  = 1;
+    private static final int WT_AVG_SENTENCE_CPLXTY  = 4;
+    private static final int WT_JS_DIVERGENCE        = 50;
+
+
+    private static final int[] weight= {WT_AVG_SENTENCE_LENGTH,WT_AVG_SENTENCE_CPLXTY, WT_AVG_WORD_LENGTH,
+                                WT_UNIQUE_WORD_RATIO, WT_HAPAX_LEGOMANA_RATIO};
     /* ---- END OF WEIGHTS ------ */
 
     /* ------- Task 4 ------- */
@@ -64,9 +68,16 @@ public class DocumentSimilarity {
      * @param doc2 the second document, is not null
      * @return the Document Divergence between the given documents
      */
-    public double documentDivergence(Document doc1, Document doc2)
+    public static double documentDivergence(Document doc1, Document doc2)
     {
-        return 0.0;
+        int matrixSize = 6;
+        double sum = 0;
+        double[] m_iDoc1 = doc1.getDivMatrix();
+        double[] m_iDoc2 = doc2.getDivMatrix();
+        for(int i = 0; i< matrixSize; i++)
+        {
+           sum += weight[i]*Math.abs(m_iDoc1[i]-m_iDoc2[i]);
+        }
+        return sum + jsDivergence(doc1, doc2)* WT_JS_DIVERGENCE;
     }
-
 }
