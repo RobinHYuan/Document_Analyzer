@@ -35,8 +35,8 @@ public class DocumentSimilarity {
         Hashtable<String,Integer> doc1_WordOccurrence = doc1.getWordOccurrence();
         Hashtable<String,Integer> doc2_WordOccurrence = doc2.getWordOccurrence();
 
-        Set<String> doc1_KeyWord = doc1_WordOccurrence.keySet();
-        Set<String> doc2_KeyWord = doc2_WordOccurrence.keySet();
+        Set<String> doc1_KeyWord = doc1.getKey();
+        Set<String> doc2_KeyWord = doc2.getKey();
         Set<String> KeyTotal = new HashSet<>();
 
         KeyTotal.addAll(doc1_KeyWord);

@@ -67,6 +67,6 @@ public class DivergenceTestX
 
     @Test
     public void garbageTesting() { //MISSING
-        Assertions.assertEquals(64.75000000000003, DocumentSimilarity.documentDivergence(DtestDocument1,garbage), 0.005);
+        Assertions.assertEquals(67.083, DocumentSimilarity.documentDivergence(DtestDocument1,garbage), 0.005);
     }
 }

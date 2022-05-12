@@ -15,13 +15,14 @@ import java.util.*;
 public class Document
 {
     /*--- Constant ---*/
-    private static int space = 0x20, comma = 0x2C, colon = 0x3A, semicolon = 0x3b, hypen = 0x2d, newline = 0x0A, period =0x2e;
+    private static final int space = 0x20, comma = 0x2C, colon = 0x3A, semicolon = 0x3b, hypen = 0x2d, newline = 0x0A, period =0x2e, hashtag = 0x23;
 
     private String docId; // Document Identifier
     private StringBuilder DocumentText; //Document Text
     Hashtable<String, Integer> wordOccurrence = new Hashtable<>();
+    HashSet<String> Key = new HashSet<>();
     private int sentenceCounter = 0, phraseCounter = 0, letterCounter = 0;
-    private int uniqueWordCounter = 0, totalWordCounter =0, SingleOccurrenceWordCounter = 0;
+    private int uniqueWordCounter = 0, totalWordCounter =0;
     /* ------- Task 0 ------- */
     /*  all the basic things  */
 
@@ -62,7 +63,7 @@ public class Document
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             for(String fileLine = reader.readLine(); fileLine != null; fileLine = reader.readLine())
             {
-                this.DocumentText.append(fileLine.toString());
+                this.DocumentText.append(fileLine);
                 this.DocumentText.append(" ");
             }
         }
@@ -80,6 +81,7 @@ public class Document
     }
 
     /**
+     *  initialize the class inside the constructor
      *  Break the document into sentence, phrase and words
      *  Count the number of sentences, phrases and words
      */
@@ -103,7 +105,7 @@ public class Document
         for (int end = iterator.next(); end != BreakIterator.DONE; start = end, end = iterator.next())
         {
             //store the sentence in a string for future use
-            String sentence = text.toString().substring(start, end);
+            String sentence = text.substring(start, end);
             this.sentenceCounter++;
 
             // We will now iterate thru the sentence to COUNT the number of phrases and identify each word
@@ -115,31 +117,29 @@ public class Document
                 //check if any punctuation such as ", or ... or : or ;" exist
                 //if exists, then it indicates there are phrases.
                 //phrases are NOT stored
+                int lastLetterIndex = 0;
                 if(isPhraseIndicator(sentence,phraseCharIndex)) tempPhraseCounter++;
-                //check for english letters
-                if(isLetterIndicator(sentence.charAt(phraseCharIndex)))
-                {
-                    //if exists, find the entire word
-                    boolean isCombinedWord = false;
-                    for( int letterCharIndex = 0; isLetterIndicator(sentence.charAt(phraseCharIndex+letterCharIndex)) || isCombinedWord; letterCharIndex++)
-                    {
-                        Word.append(sentence.charAt(phraseCharIndex+letterCharIndex));//apend the found character/letter into the stringBuilder
-                        if(phraseCharIndex+letterCharIndex >= sentence.length() - 1) break;//prevent array index out of bound
-                        if(phraseCharIndex+letterCharIndex < sentence.length() - 2)//prevent array index out of bound, check for combined words such "I'm"
-                        {
-                            isCombinedWord =isLetterIndicator(sentence.charAt(phraseCharIndex+letterCharIndex+2)) && (int) sentence.charAt(phraseCharIndex+letterCharIndex+1) != space;
-                            //suppose my index is at "I" then index+1 is " ' "(non-space) and index+2 is m.
-                            //if it's a combined word, then there might be a non-english character in the middle, however it can't be space
-                            //in addition the character right after the non-english character MUST be a english letter
-                        }
+
+                //check for english letters and hashtag(we allow the word to start with a hashtag symbol)
+                if(isLetterIndicator(sentence.charAt(phraseCharIndex)) || (int)sentence.charAt(phraseCharIndex)==hashtag )
+                {   //check for boundary condition and spaces
+                    //if space is found, terminate loop since the word must be ended by a space
+                    for(int letterCharIndex = 0; phraseCharIndex+letterCharIndex < sentence.length() && (int)sentence.charAt(phraseCharIndex+letterCharIndex)!=space; letterCharIndex++ )
+                    {   //record the very last english letter
+                        if(isLetterIndicator(sentence.charAt(phraseCharIndex+letterCharIndex))) lastLetterIndex = phraseCharIndex+ letterCharIndex;
                     }
+
+                    for(int i = phraseCharIndex; i <= lastLetterIndex; i++) Word.append(sentence.charAt(i));
+
                     if(!Word.isEmpty())// check and see if its empty
                     {    //if not empty
                         this.totalWordCounter++;
+                        String tempWord = Word.toString().toLowerCase();
                         //if it doesn't exist in the hashtable, initialized and set the value(number of occurrences ) to 1
-                        if(!this.wordOccurrence.containsKey(Word.toString().toLowerCase()) ) this.wordOccurrence.put(Word.toString().toLowerCase(),1);
+                        if(!this.wordOccurrence.containsKey(tempWord) ) this.wordOccurrence.put(tempWord,1);
                         //otherwise increment the value
-                        else this.wordOccurrence.put(Word.toString().toLowerCase(),this.wordOccurrence.get(Word.toString().toLowerCase())+1);
+                        else this.wordOccurrence.put(tempWord,this.wordOccurrence.get(tempWord)+1);
+                        this.Key.add(tempWord);
                     }
 
                 }
@@ -164,7 +164,7 @@ public class Document
     {
         char currentChar = sentence.charAt(index);
         int charAscii = (int) currentChar;
-        boolean BasicPhraseIndicator = charAscii == colon || charAscii == semicolon || charAscii == comma;
+        boolean  BasicPhraseIndicator= charAscii == colon || charAscii == semicolon || charAscii == comma;
         return BasicPhraseIndicator;
         /*
         boolean AdvancedPhraseIndicator = false;
@@ -198,21 +198,14 @@ public class Document
     }
     /* ------- Task 1 ------- */
 
-    public double averageWordLength()
-    {
-        return (double)this.letterCounter / this.totalWordCounter;
-    }
+    public double averageWordLength() {return (double)this.letterCounter / this.totalWordCounter;}
 
-    public double uniqueWordRatio()
-    {
-        return (double) (this.wordOccurrence.size()) / this.totalWordCounter;
-    }
+    public double uniqueWordRatio() {return (double) (this.wordOccurrence.size()) / this.totalWordCounter;}
 
     public double hapaxLegomanaRatio()
     {
         this.uniqueWordCounter = 0;
-        Set<String> KeyWord = this.wordOccurrence.keySet();
-        for(String Key: KeyWord)
+        for(String Key: this.Key)
         {
             if(this.wordOccurrence.get(Key) == 1) this.uniqueWordCounter++;
         }
@@ -225,10 +218,7 @@ public class Document
      * Obtain the number of sentences in the document
      * @return the number of sentences in the document
      */
-    public int numSentences()
-    {
-        return sentenceCounter;
-    }
+    public int numSentences() {return sentenceCounter;}
 
     /**
      * Obtain a specific sentence from the document.
@@ -265,22 +255,9 @@ public class Document
         return sb.toString();
     }
 
-    public double averageSentenceLength()
-    {   /*
-        totalWordCounter =0;
-        Set<String> KeyWord = this.wordOccurrence.keySet();
-        for(String Key: KeyWord)
-        {
-          5  totalWordCounter+=this.wordOccurrence.get(Key);
-        }*/
-        return (double) this.totalWordCounter/(this.sentenceCounter);
-    }
+    public double averageSentenceLength() {return (double) this.totalWordCounter/(this.sentenceCounter);}
 
-    public double averageSentenceComplexity()
-    {
-
-        return (double) this.phraseCounter/this.sentenceCounter;
-    }
+    public double averageSentenceComplexity() {return (double) this.phraseCounter/this.sentenceCounter;}
 
 
     public Hashtable<String,Integer> getWordOccurrence()
@@ -290,10 +267,15 @@ public class Document
         return copy;
     }
 
-    public int getTotalWordCounter()
+
+    public HashSet getKey()
     {
-        return totalWordCounter;
+        HashSet<String> copy = new HashSet<>();
+        copy.addAll(this.Key);
+        return copy;
     }
+
+    public int getTotalWordCounter() {return totalWordCounter;}
     /* ------- Task 3 ------- */
 
 //    To implement these methods while keeping the class
@@ -318,10 +300,8 @@ public class Document
      * @throws NoSuitableSentenceException if there is no sentence that
      * expresses a positive sentiment
      */
-    public String getMostPositiveSentence() throws NoSuitableSentenceException
-    {
-        return SentimentAnalysis.getMostPositiveSentence(this);
-    }
+    public String getMostPositiveSentence()
+            throws NoSuitableSentenceException {return SentimentAnalysis.getMostPositiveSentence(this);}
 
     /**
      * Obtain the sentence with the most negative sentiment in the document
@@ -331,22 +311,22 @@ public class Document
      * @throws NoSuitableSentenceException if there is no sentence that
      * expresses a negative sentiment
      */
-    public String getMostNegativeSentence() throws NoSuitableSentenceException
-    {
-        return SentimentAnalysis.getMostNegativeSentence(this);
-    }
+    public String getMostNegativeSentence()
+            throws NoSuitableSentenceException {return SentimentAnalysis.getMostNegativeSentence(this);}
 
+
+    /**
+     * @return a 1-D array contains the required info for computing the document divergence
+     */
 
     public double[] getDivMatrix()
     {
         double[] m_iDoc = new double[5];
-
         m_iDoc[0] = this.averageSentenceLength();
         m_iDoc[1] = this.averageSentenceComplexity();
         m_iDoc[2] = this.averageWordLength();
         m_iDoc[3] = this.uniqueWordRatio();
         m_iDoc[4] = this.hapaxLegomanaRatio();
-
         return m_iDoc;
     }
 
