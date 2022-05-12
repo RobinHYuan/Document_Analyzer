@@ -2,6 +2,10 @@ package cpen221.mp1.similarity;
 
 import cpen221.mp1.Document;
 
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
+
 public class DocumentSimilarity {
 
     /* DO NOT CHANGE THESE WEIGHTS */
@@ -21,9 +25,37 @@ public class DocumentSimilarity {
      * @param doc2 the second document, is not null
      * @return the Jensen-Shannon Divergence between the given documents
      */
-    public double jsDivergence(Document doc1, Document doc2) {
-        // TODO: Implement this method
-        return 0.0;
+    public static double jsDivergence(Document doc1, Document doc2)
+    {
+        double wi, pi, qi, mi, sum = 0;
+        Hashtable<String,Integer> doc1_WordOccurrence = doc1.getWordOccurrence();
+        Hashtable<String,Integer> doc2_WordOccurrence = doc2.getWordOccurrence();
+
+        Set<String> doc1_KeyWord = doc1_WordOccurrence.keySet();
+        Set<String> doc2_KeyWord = doc2_WordOccurrence.keySet();
+        Set<String> KeyTotal = new HashSet<>();
+
+        KeyTotal.addAll(doc1_KeyWord);
+        KeyTotal.addAll(doc2_KeyWord);
+
+        int doc1_totalWords = doc1.getTotalWordCounter();
+        int doc2_totalWords = doc2.getTotalWordCounter();
+        //summation of all words in doc1
+
+        for(String Key: KeyTotal)
+        {
+            int f1 = doc1_WordOccurrence.get(Key) == null ? 0:doc1_WordOccurrence.get(Key);
+            int f2 = doc2_WordOccurrence.get(Key) == null ? 0:doc2_WordOccurrence.get(Key);
+
+            pi = (double) f1/doc1_totalWords;
+            qi = (double) f2/doc2_totalWords;
+            mi = (pi + qi)/2;
+
+            double partA = (pi == 0)? 0 : pi*(Math.log(pi/mi) / Math.log(2));
+            double partB = (qi == 0)? 0 : qi*(Math.log(qi/mi) / Math.log(2));
+            sum += (partA + partB);
+        }
+        return sum/2.0;
     }
 
     /**
@@ -32,9 +64,8 @@ public class DocumentSimilarity {
      * @param doc2 the second document, is not null
      * @return the Document Divergence between the given documents
      */
-    public double documentDivergence(Document doc1, Document doc2) {
-        // TODO: Implement this method
-        // Use the provided weights in computing the document divergence
+    public double documentDivergence(Document doc1, Document doc2)
+    {
         return 0.0;
     }
 

@@ -14,7 +14,7 @@ public class Task1SmokeTests {
 
     @BeforeAll
     public static void setupTests() throws MalformedURLException {
-        testDocument1 = new Document("The Ant and The Cricket", "resources/antcrick.txt");
+        testDocument1 = new Document("The Ant and The Cricket", "resources/antcrickORG.txt");
         testDocument2 = new Document("The Ant and The Cricket", new URL("http://textfiles.com/stories/antcrick.txt"));
     }
 
