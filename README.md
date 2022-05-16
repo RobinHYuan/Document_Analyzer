@@ -35,7 +35,7 @@ by definition, ![equation](https://latex.codecogs.com/svg.image?%5Ctiny%20plog_2
 The Jensen-Shannon Divergence uses the frequency with which words appear to determine if two documents are divergent or not.
 
 We will now calculate the group divergence of any two given documents using the following definition:
-![equation](https://latex.codecogs.com/svg.image?%5Cinline%20%5CDelta_%7B1,2%7D%20=%20(%5Csum_%7Bi%20=%201%7D%5E%7B5%7D%20w_i%5Cdelta_i)&plus;w_%7Bjs%7D%5Cdelta_%7Bjs%7D,%20%5Ctextup%7B%20where%20%7D%5Cdelta_i%20=%20%7C%7Cm_%7Bi,1%7D%20-%20m_%7Bi,2%7D%7C%7C,m_%7Bi,j%7D%20%5Ctextup%7B%20is%20the%20value%20of%7D%20m_i%20%5Ctextup%7B%20for%20document%7D%20D_j,%5Ctextup%7B%20and%20%7D%20w_i%20%5Ctextup%7B%20and%20%7D%20w_%7Bjs%7D%20%5Ctextup%7B%20are%20given%20weights.%7D)
+![equation](https://latex.codecogs.com/svg.image?%5Cinline%20%5CDelta_%7B1,2%7D%20=%20(%5Csum_%7Bi%20=%201%7D%5E%7B5%7D%20w_i%5Cdelta_i)&plus;w_%7Bjs%7D%5Cdelta_%7Bjs%7D%20%5Ctextup%7B%20where%20%7D%5Cdelta_i%20=%20%7C%7Cm_%7Bi,1%7D%20-%20m_%7Bi,2%7D%7C%7C,m_%7Bi,j%7D%20%5Ctextup%7B%20is%20the%20value%20of%20%7D%20m_i%20%5Ctextup%7B%20for%20document%7D%20D_j%5Ctextup%7B%20and%20%7D%20w_i%20%5Ctextup%7B%20and%20%7D%20w_%7Bjs%7D%20%5Ctextup%7B%20are%20given%20weights.%7D)
 </br>
 Note that ***𝛿<sub>js</sub>*** is the Jensen-Shannon divergence. The larger the divergence, the more dissimilar the two documents are.
 </br>
