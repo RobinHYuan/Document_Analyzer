@@ -31,7 +31,7 @@ In order to determine their document divergences, we will first compute their `J
 
 In our context, we defined *p<sub>i</sub>* as the probability of word *ω<sub>i</sub>* appearing in document **P** and  *q<sub>i</sub>* as the probability of word *ω<sub>i</sub>* appearing in document **Q**.
 The summation is over all words that appear in the two documents together. If *ω<sub>i</sub>* appears in **P** and not in **Q** then *q<sub>i</sub>* = 0. Further,
-by definition,![equation](https://latex.codecogs.com/svg.image?%5Csmall%20plog_2(p/m)=%200%20%5Ctextup%7B%20when%20%7D%20p%20=0) and ![equation](https://latex.codecogs.com/svg.image?\small&space;m_i&space;=(p_i&plus;q_i)/{2}).
+by definition, ![equation](https://latex.codecogs.com/svg.image?%5Csmall%20plog_2(p/m)=%200%20%5Ctextup%7B%20when%20%7D%20p%20=0) and ![equation](https://latex.codecogs.com/svg.image?\tiny&space;m_i&space;=(p_i&plus;q_i)/{2}) .
 The Jensen-Shannon Divergence uses the frequency with which words appear to determine if two documents are divergent or not.
 
 [^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or 
