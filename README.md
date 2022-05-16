@@ -17,5 +17,5 @@ In this task, I performed the following operations after retrieving the text fro
 
 [^1]:  A word is a non-empty token that is not completely made up of punctuation. 
 If a token begins or ends with punctuation then a word can be obtained by removing the starting and trailing punctuation.
-Specifically, the start of word should not contain any of ! " $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | }.
-The end of a word should not include any of ! # " $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~.
+Specifically, the start of word should not contain any of ``` ``! " $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | }.```
+The end of a word should not include any of ``` ``! # " $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~.```
