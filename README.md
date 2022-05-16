@@ -24,7 +24,7 @@ A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative
 <p align="center"><img src="resources/API.png" width="90%" ></p>  
 
 ### Part III: Document Similarity Analysis
-We now have all the required metrics to group different documents. The similarity of any two documents are determined by their document divergences.
+We now have all the required metrics to group different documents. The similarity of any two documents are determined by their document divergences and union-find.
 In order to determine their document divergences, we will first compute their `Jensen-Shannon Divergences`: </br>
 
 </br>![equation](https://latex.codecogs.com/svg.image?%5Cinline%20%5CLARGE%20JSD(P%7C%7CQ)%20=%20%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%20=%201%7D%5E%7Bn%7D(p_ilog_2%20%5Cfrac%7Bp_i%7D%7Bm_i%7D%20&plus;1_ilog_2%20%5Cfrac%7B1_i%7D%7Bm_i%7D%20))
@@ -36,7 +36,7 @@ The Jensen-Shannon Divergence uses the frequency with which words appear to dete
 
 We will now calculate the group divergence of any two given documents using the following definition:
 ![equation](https://latex.codecogs.com/svg.image?%5Cinline%20%5CDelta_%7B1,2%7D%20=%20(%5Csum_%7Bi%20=%201%7D%5E%7B5%7D%20w_i%5Cdelta_i)&plus;w_%7Bjs%7D%5Cdelta_%7Bjs%7D,%20%5Ctextup%7B%20where%20%7D%5Cdelta_i%20=%20%7C%7Cm_%7Bi,1%7D%20-%20m_%7Bi,2%7D%7C%7C,m_%7Bi,j%7D%20%5Ctextup%7B%20is%20the%20value%20of%7D%20m_i%20%5Ctextup%7B%20for%20document%7D%20D_j,%5Ctextup%7B%20and%20%7D%20w_i%20%5Ctextup%7B%20and%20%7D%20w_%7Bjs%7D%20%5Ctextup%7B%20are%20given%20weights.%7D)
-
+Note that ***𝛿<sub>js</sub>*** is the Jensen-Shannon divergence.The larger the divergence, the more dissimilar the two documents are.
 
 
 
