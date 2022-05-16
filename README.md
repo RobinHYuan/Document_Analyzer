@@ -19,12 +19,10 @@ In this task, I performed the following operations after retrieving the text fro
 ### Part II: Sentiment Analysis
 In this part, Google Cloud Natural Language client library is used to detect the sentiment[^4] of each sentence 
 in the given document. Using Google's Natural Language AI system, we can obtain a sentiment score and a sentiment magnitude. 
-A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative is the sentiment score is ≤ -0.3. 
-
-
-[^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or EOF excludes whitespace on either end
-and is not empty.
-
+A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative is the sentiment score is ≤ -0.3.
+[^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or 
+EOF excludes whitespace on either end and is not empty.
+<p align="center"><img src="resources/API.png" width="90%" ></p>  
 [^2]: A word is a non-empty token that is not completely made up of punctuation. 
 If a token begins or ends with punctuation then a word can be obtained by removing the starting and trailing punctuation.
 Specifically, the start of word should not contain any of ``` ``! " $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | }.```
