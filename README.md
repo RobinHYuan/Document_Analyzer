@@ -24,9 +24,13 @@ A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative
 <p align="center"><img src="resources/API.png" width="90%" ></p>  
 
 ### Part III: Document Similarity Analysis
-
+We now have all the required metrics to group different documents. The similarity of any two documents are determined by their document divergences.
+In order to determine their document divergences, we will first compute their `Jensen-Shannon Divergences`:
 ![equation](https://latex.codecogs.com/svg.image?\inline&space;JSD(P||Q)&space;=&space;\frac{1}{2}\sum_{i&space;=&space;1}^{n}(p_ilog_2&space;\frac{p_i}{m_i}&space;&plus;1_ilog_2&space;\frac{1_i}{m_i}&space;))
-
+In our context, we defined *p<sub>i</sub>* as the probability of word *ω<sub>i</sub>* appearing in document **P** and  *q<sub>i</sub>* as the probability of word *ω<sub>i</sub>* appearing in document **Q**.
+The summation is over all words that appear in the two documents together. If *ω<sub>i</sub>* appears in **P** and not in **Q** then *q<sub>i</sub>* = 0. Further,
+by definition,![equation](https://latex.codecogs.com/svg.image?plog_2%20%5Cfrac%7Bp%7D%7Bm%7D=%200%20%5Ctextup%7B%20when%20%7D%20p%20=0) and ![equation](https://latex.codecogs.com/svg.image?m_i&space;=\frac{p_i&plus;q_i}{2}).
+The Jensen-Shannon Divergence uses the frequency with which words appear to determine if two documents are divergent or not.
 
 [^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or 
 EOF excludes whitespace on either end and is not empty.
