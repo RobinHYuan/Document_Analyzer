@@ -15,6 +15,13 @@ In this task, I performed the following operations after retrieving the text fro
   - The number of unique words to the total number of words, m<sub>4</sub>
   - The number of words occurring exactly once to the total number of words, m<sub>5</sub>
 
+
+### Part II: Sentiment Analysis
+In this part, Google Cloud Natural Language client library is used to detect the sentiment[^4] of each sentence 
+in the given document. Using Google's Natural Language AI system, we can obtain a sentiment score and a sentiment magnitude. 
+A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative is the sentiment score is ≤ -0.3. 
+
+
 [^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or EOF excludes whitespace on either end
 and is not empty.
 
@@ -26,3 +33,9 @@ Hyphenated words are considered to be one word. Words are allowed to start with 
 
 [^3]: A phrase is a non-empty (empty = empty string or whitespace only) part of a sentence that 
 is separated from another phrase by commas, colons and semi-colons.
+
+[^4]:It is important to note that the Natural Language API indicates differences between positive and negative emotion in a document,
+but does not identify specific positive and negative emotions. 
+For example, "angry" and "sad" are both considered negative emotions. 
+However, when the Natural Language API analyzes text that is considered "angry", or text that is considered "sad", 
+the response only indicates that the sentiment in the text is negative, not "sad" or "angry".
