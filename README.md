@@ -15,10 +15,8 @@ In this task, I performed the following operations after retrieving the text fro
   - The number of unique words to the total number of words, m<sub>4</sub>
   - The number of words occurring exactly once to the total number of words, m<sub>5</sub>
 
-[^1]: We will consider a sentence to be a sequence of characters that 
-- is terminated by  the characters ```! ? .``` or EOF 
-- excludes whitespace on either end
-- is not empty.
+[^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or EOF excludes whitespace on either end
+and is not empty.
 
 [^2]: A word is a non-empty token that is not completely made up of punctuation. 
 If a token begins or ends with punctuation then a word can be obtained by removing the starting and trailing punctuation.
