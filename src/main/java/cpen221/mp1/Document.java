@@ -23,6 +23,10 @@ public class Document
     HashSet<String> Key = new HashSet<>();
     private int sentenceCounter = 0, phraseCounter = 0, letterCounter = 0;
     private int uniqueWordCounter = 0, totalWordCounter =0;
+
+    public int setNum = -1;
+
+
     /* ------- Task 0 ------- */
     /*  all the basic things  */
 
