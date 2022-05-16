@@ -23,6 +23,10 @@ A sentence is positive if the sentiment score is ≥ 0.3. A sentence is negative
 
 <p align="center"><img src="resources/API.png" width="90%" ></p>  
 
+### Part III: Document Similarity Analysis
+
+![equation](https://latex.codecogs.com/svg.image?JSD(P||Q)&space;=&space;\frac{1}{2}\sum_{i&space;=&space;1}^{n}(p_ilog_2&space;\frac{p_i}{m_i}&space;&plus;1_ilog_2&space;\frac{1_i}{m_i}&space;))
+
 
 [^1]: We will consider a sentence to be a sequence of characters that is terminated by  the characters ```! ? .``` or 
 EOF excludes whitespace on either end and is not empty.
